@@ -10,6 +10,7 @@ namespace Lind.DI.Console
             Fly fly = DIFactory.Resolve<Fly>();
             fly.step1();
             System.Console.WriteLine("Hello World!");
+            System.Console.ReadKey();
         }
     }
 }

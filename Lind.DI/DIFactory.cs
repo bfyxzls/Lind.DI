@@ -52,7 +52,7 @@ namespace Lind.DI
                     throw new Exception($"Lind.DI init {type.Name} error.");
                 }
             }
-            var container = builder.Build();
+            container = builder.Build();
         }
         static void registor(ContainerBuilder builder, Type typeImpl, Type type, ComponentAttribute componentAttribute)
         {
