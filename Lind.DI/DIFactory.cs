@@ -1,82 +1,137 @@
 ﻿using Autofac;
 using System;
 using System.Linq;
+using System.Reflection;
 
 namespace Lind.DI
 {
-    public class DIFactory
-    {
+	public class DIFactory
+	{
 
-        static IContainer container;
-        public static T Resolve<T>()
-        {
-            if (container == null)
-                throw new ArgumentException("please run DIFactory.Init().");
-            return container.Resolve<T>();
-        }
-        public static void Init()
-        {
-            var builder = new ContainerBuilder();
-            var arr = AppDomain.CurrentDomain.GetAssemblies().Where(
-                 x => !x.FullName.StartsWith("Dapper")
-                 && !x.FullName.StartsWith("System")
-                 && !x.FullName.StartsWith("AspNet")
-                 && !x.FullName.StartsWith("Microsoft"))
-                 .SelectMany(x => x.DefinedTypes)
-                 .Where(i => i.IsPublic && i.IsClass)
-                 .ToList();
-            foreach (var type in arr)
-            {
-                try
-                {
-                    if (type.GetCustomAttributes(false).Select(i => i.GetType()).Contains(typeof(ComponentAttribute)))
-                    {
-                        ComponentAttribute componentAttribute = (ComponentAttribute)type.GetCustomAttributes(false).FirstOrDefault(o => o.GetType() == typeof(ComponentAttribute));
+		static IContainer container;
 
-                        if (type.GetInterfaces() != null && type.GetInterfaces().Any())
-                        {
-                            type.GetInterfaces().ToList().ForEach(o =>
-                            {
-                                registor(builder, type, o, componentAttribute);
+		/// <summary>
+		/// 手动注入.
+		/// </summary>
+		/// <returns>The resolve.</returns>
+		/// <typeparam name="T">The 1st type parameter.</typeparam>
+		public static T Resolve<T>()
+		{
+			if (container == null)
+				throw new ArgumentException("please run DIFactory.Init().");
+			return container.Resolve<T>();
+		}
 
-                            });
-                        }
-                        else
-                        {
-                            registor(builder, type, type, componentAttribute);
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    throw new Exception($"Lind.DI init {type.Name} error.");
-                }
-            }
-            container = builder.Build();
-        }
-        static void registor(ContainerBuilder builder, Type typeImpl, Type type, ComponentAttribute componentAttribute)
-        {
-            if (componentAttribute.LifeCycle == LifeCycle.Global)
-            {
-                if (componentAttribute.Named != null)
-                    builder.RegisterType(typeImpl).Named(componentAttribute.Named, type).SingleInstance();
-                else
-                    builder.RegisterType(typeImpl).As(type).SingleInstance();
-            }
-            else if (componentAttribute.LifeCycle == LifeCycle.CurrentScope)
-            {
-                if (componentAttribute.Named != null)
-                    builder.RegisterType(typeImpl).Named(componentAttribute.Named, type).InstancePerLifetimeScope();
-                else
-                    builder.RegisterType(typeImpl).As(type).InstancePerLifetimeScope();
-            }
-            else
-            {
-                if (componentAttribute.Named != null)
-                    builder.RegisterType(typeImpl).Named(componentAttribute.Named, type).InstancePerRequest();
-                else
-                    builder.RegisterType(typeImpl).As(type).InstancePerRequest();
-            }
-        }
-    }
+		/// <summary>
+		/// 手动注入.
+		/// </summary>
+		/// <returns>The by named.</returns>
+		/// <param name="named">Named.</param>
+		/// <typeparam name="T">The 1st type parameter.</typeparam>
+		public static T ResolveByNamed<T>(string named)
+		{
+			if (container == null)
+				throw new ArgumentException("please run DIFactory.Init().");
+			return container.ResolveNamed<T>(named);
+		}
+
+
+		/// <summary>
+		/// 把对象里的Inject特性的对象注入.
+		/// web环境下，应该使用filter拦截器将当前控制器传传InjectFromObject去注入它.
+		/// </summary>
+		/// <param name="obj">Object.</param>
+		public static void InjectFromObject(object obj)
+		{
+			if (obj.GetType().IsClass && obj.GetType() != typeof(string))
+				foreach (var field in obj.GetType().GetFields(
+					BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public))
+				{
+					if (field.GetCustomAttributes(false).Select(i => i.GetType())
+					.Contains(typeof(InjectionAttribute)))
+					{
+						field.SetValue(obj, container.Resolve(field.FieldType));
+						//递归处理它的内部字段
+						InjectFromObject(field.GetValue(obj));
+					}
+
+				}
+		}
+
+		/// <summary>
+		/// 初始化.
+		/// </summary>
+		public static void Init()
+		{
+			var builder = new ContainerBuilder();
+			var arr = AppDomain.CurrentDomain.GetAssemblies().Where(
+				 x => !x.FullName.StartsWith("Dapper")
+				 && !x.FullName.StartsWith("System")
+				 && !x.FullName.StartsWith("AspNet")
+				 && !x.FullName.StartsWith("Microsoft"))
+				 .SelectMany(x => x.DefinedTypes)
+				 .Where(i => i.IsPublic && i.IsClass)
+				 .ToList();
+			foreach (var type in arr)
+			{
+				try
+				{
+					if (type.GetCustomAttributes(false).Select(i => i.GetType()).Contains(typeof(ComponentAttribute)))
+					{
+						ComponentAttribute componentAttribute = (ComponentAttribute)type.GetCustomAttributes(false).FirstOrDefault(o => o.GetType() == typeof(ComponentAttribute));
+
+						if (type.GetInterfaces() != null && type.GetInterfaces().Any())
+						{
+							type.GetInterfaces().ToList().ForEach(o =>
+							{
+								registor(builder, type, o, componentAttribute);
+
+							});
+						}
+						else
+						{
+							registor(builder, type, type, componentAttribute);
+						}
+					}
+				}
+				catch (Exception)
+				{
+					throw new Exception($"Lind.DI init {type.Name} error.");
+				}
+			}
+			container = builder.Build();
+		}
+
+		/// <summary>
+		/// 注册组件.
+		/// </summary>
+		/// <param name="builder">Builder.</param>
+		/// <param name="typeImpl">Type impl.</param>
+		/// <param name="type">Type.</param>
+		/// <param name="componentAttribute">Component attribute.</param>
+		static void registor(ContainerBuilder builder, Type typeImpl, Type type, ComponentAttribute componentAttribute)
+		{
+			if (componentAttribute.LifeCycle == LifeCycle.Global)
+			{
+				if (componentAttribute.Named != null)
+					builder.RegisterType(typeImpl).Named(componentAttribute.Named, type).SingleInstance();
+				else
+					builder.RegisterType(typeImpl).As(type).SingleInstance();
+			}
+			else if (componentAttribute.LifeCycle == LifeCycle.CurrentScope)
+			{
+				if (componentAttribute.Named != null)
+					builder.RegisterType(typeImpl).Named(componentAttribute.Named, type).InstancePerLifetimeScope();
+				else
+					builder.RegisterType(typeImpl).As(type).InstancePerLifetimeScope();
+			}
+			else
+			{
+				if (componentAttribute.Named != null)
+					builder.RegisterType(typeImpl).Named(componentAttribute.Named, type).InstancePerRequest();
+				else
+					builder.RegisterType(typeImpl).As(type).InstancePerRequest();
+			}
+		}
+	}
 }

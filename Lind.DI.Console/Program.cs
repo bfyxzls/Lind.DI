@@ -4,13 +4,18 @@ namespace Lind.DI.Console
 {
     class Program
     {
+        [Injection]
+        Fly flyObj;
+        void print(){
+            DIFactory.Init();
+            DIFactory.InjectFromObject(this);
+            flyObj.step1();
+        }
         static void Main(string[] args)
         {
             DIFactory.Init();
-            Fly fly = DIFactory.Resolve<Fly>();
-            fly.step1();
             System.Console.WriteLine("Hello World!");
-            System.Console.ReadKey();
+            new Program().print();
         }
     }
 }
