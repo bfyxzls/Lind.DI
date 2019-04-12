@@ -8,5 +8,6 @@ namespace Lind.DI
     [AttributeUsage(AttributeTargets.Field)]
     public class InjectionAttribute : Attribute
     {
+        public string Named{get;set;}
     }
 }

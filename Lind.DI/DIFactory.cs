@@ -5,7 +5,11 @@ using System.Reflection;
 
 namespace Lind.DI
 {
-	public class DIFactory
+
+    /// <summary>
+    /// DI工厂.
+    /// </summary>
+    public class DIFactory
 	{
 
 		static IContainer container;
@@ -121,9 +125,9 @@ namespace Lind.DI
 			else if (componentAttribute.LifeCycle == LifeCycle.CurrentScope)
 			{
 				if (componentAttribute.Named != null)
-					builder.RegisterType(typeImpl).Named(componentAttribute.Named, type).InstancePerLifetimeScope();
+					builder.RegisterType(typeImpl).Named(componentAttribute.Named, type).InstancePerDependency();
 				else
-					builder.RegisterType(typeImpl).As(type).InstancePerLifetimeScope();
+					builder.RegisterType(typeImpl).As(type).InstancePerDependency();
 			}
 			else
 			{
