@@ -77,8 +77,7 @@ namespace Lind.DI
         public static void Init()
         {
             var builder = new ContainerBuilder();
-            var arr = AppDomain.CurrentDomain.GetAssemblies().Where(
-                 x => !x.FullName.StartsWith("Dapper") && !x.FullName.StartsWith("System") && !x.FullName.StartsWith("AspNet") && !x.FullName.StartsWith("Microsoft"))
+            var arr = AppDomain.CurrentDomain.GetAssemblies()
                  .SelectMany(x => x.DefinedTypes)
                  .Where(i => i.IsPublic && i.IsClass)
                  .ToList();
