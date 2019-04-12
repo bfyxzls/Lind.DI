@@ -4,12 +4,12 @@ using System.Text;
 
 namespace Lind.DI.Console
 {
-    [Component]
-    public class Run : IRun
+    [Component(Named="RunPeople")]
+    public class RunPeople : IRun
     {
         public void Do()
         {
-            System.Console.WriteLine("跑起来!");
+            System.Console.WriteLine("人类跑起来!");
         }
     }
 }

@@ -5,10 +5,10 @@ using System.Text;
 namespace Lind.DI.Console
 {
     [Component]
-    public class Fly
+    public class PeopleFly : IFly
     {
-        [Injection]
-        Run run;
+        [Injection(Named="RunPeople")]
+        IRun run;
         public void step1()
         {
             run.Do();

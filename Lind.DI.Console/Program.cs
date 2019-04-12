@@ -5,7 +5,7 @@ namespace Lind.DI.Console
     class Program
     {
         [Injection]
-        Fly flyObj;
+        IFly flyObj;
         void print(){
             DIFactory.Init();
             DIFactory.InjectFromObject(this);
