@@ -4,12 +4,12 @@ using System.Text;
 
 namespace Lind.DI.Console
 {
-    [Component]
-    public class Run : IRun
+    [Component(Named = "RunUSA")]
+    public class RunUSA : IRun
     {
         public void Do()
         {
-            System.Console.WriteLine("跑起来!");
+            System.Console.WriteLine("美国产的发动机!");
         }
     }
 }

@@ -4,15 +4,15 @@ using System.Text;
 
 namespace Lind.DI.Console
 {
-    [Component(Named="ChinaPeople")]
-    public class PeopleFly : IFly
+    [Component(Named="UsaPeople")]
+    public class UsaPeopleFly : IFly
     {
-        [Injection(Named="RunChina")]
+        [Injection(Named="RunUSA")]
         IRun run;
         public void step1()
         {
             run.Do();
-            System.Console.WriteLine("飞机的元件也就这些了!");
+            System.Console.WriteLine("aircraft constituent part. ");
         }
     }
 }
