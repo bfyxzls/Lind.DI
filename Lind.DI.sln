@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lind.DI.Console", "Lind.DI.Console\Lind.DI.Console.csproj", "{2D3C639B-A736-41CC-8200-B7FC0A17576E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lind.DI.Console", "Lind.DI.Console\Lind.DI.Console.csproj", "{2D3C639B-A736-41CC-8200-B7FC0A17576E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lind.DI", "Lind.DI\Lind.DI.csproj", "{5086E946-154E-489C-9C45-39792981A8E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lind.DI", "Lind.DI\Lind.DI.csproj", "{5086E946-154E-489C-9C45-39792981A8E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lind.Caching", "Lind.Caching\Lind.Caching.csproj", "{1110D838-DEA9-410B-A3EF-57AD83D6F506}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lind.Caching", "Lind.Caching\Lind.Caching.csproj", "{1110D838-DEA9-410B-A3EF-57AD83D6F506}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lind.Logger", "Lind.Logger\Lind.Logger.csproj", "{6C59E910-A433-4888-ADAE-0DCF921100EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{1110D838-DEA9-410B-A3EF-57AD83D6F506}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1110D838-DEA9-410B-A3EF-57AD83D6F506}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1110D838-DEA9-410B-A3EF-57AD83D6F506}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C59E910-A433-4888-ADAE-0DCF921100EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C59E910-A433-4888-ADAE-0DCF921100EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C59E910-A433-4888-ADAE-0DCF921100EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C59E910-A433-4888-ADAE-0DCF921100EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

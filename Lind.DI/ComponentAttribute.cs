@@ -8,9 +8,13 @@ namespace Lind.DI
     [AttributeUsage(AttributeTargets.Class)]
     public class ComponentAttribute : Attribute
     {
+        public ComponentAttribute(string named = null)
+        {
+            this.Named = named;
+        }
         public LifeCycle LifeCycle { get; set; } = LifeCycle.CurrentScope;
 
-        public String Named { get; set; }
+        public string Named { get; set; }
 
         public Type Intercepted { get; set; }
 

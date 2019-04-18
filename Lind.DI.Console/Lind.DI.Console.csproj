@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Lind.DI\Lind.DI.csproj" />
     <ProjectReference Include="..\Lind.Caching\Lind.Caching.csproj" />
+    <ProjectReference Include="..\Lind.Logger\Lind.Logger.csproj" />
 
   </ItemGroup>
 

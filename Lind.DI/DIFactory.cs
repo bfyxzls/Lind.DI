@@ -79,7 +79,7 @@ namespace Lind.DI
         /// </summary>
         public static void Init()
         {
-            var builder = new ContainerBuilder();
+
             var all = AppDomain.CurrentDomain.GetAssemblies().Where(
                x => !x.FullName.StartsWith("Dapper")
                && !x.FullName.StartsWith("System")
@@ -92,6 +92,8 @@ namespace Lind.DI
             var arr = all.SelectMany(x => x.DefinedTypes)
                  .Where(i => i.IsPublic && i.IsClass)
                  .ToList();
+
+            var builder = new ContainerBuilder();
             foreach (var type in arr)
             {
                 try
