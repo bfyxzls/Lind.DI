@@ -141,16 +141,16 @@ namespace Lind.DI
                         builder.RegisterType(componentAttribute.Intercepted).SingleInstance();
                         break;
                     case LifeCycle.CurrentRequest:
-                        builder.RegisterType(componentAttribute.Intercepted).InstancePerDependency();
+                        builder.RegisterType(componentAttribute.Intercepted).InstancePerLifetimeScope();
                         break;
                     case LifeCycle.CurrentScope:
-                        builder.RegisterType(componentAttribute.Intercepted).InstancePerLifetimeScope();
+                        builder.RegisterType(componentAttribute.Intercepted).InstancePerDependency();
                         break;
                 }
             }
-            
+
             var builders = builder.RegisterType(typeImpl);
-            
+
             switch (componentAttribute.LifeCycle)
             {
                 case LifeCycle.Global:
@@ -268,7 +268,7 @@ namespace Lind.DI
                             }
                         }
                         else
-                            builder.RegisterType(typeImpl).As(type).InstancePerLifetimeScope();
+                            builders.As(type).InstancePerLifetimeScope();
                     }
                     break;
             }

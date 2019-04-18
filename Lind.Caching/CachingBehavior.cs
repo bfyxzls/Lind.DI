@@ -94,6 +94,8 @@ namespace Lind.Caching
         /// <param name="input">input.</param>
         public void Intercept(IInvocation input)
         {
+            //注入拦截对象需要的组件（拦截对象与初始对象是两个不同的对象，所以在被拦截时，应该从新注入）
+            Lind.DI.DIFactory.InjectFromObject(input.InvocationTarget);
             var method = input.Method;
             //键值前缀
             string key = cacheProjectName + splitStr + method.DeclaringType.Name + splitStr;

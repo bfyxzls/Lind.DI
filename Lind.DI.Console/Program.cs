@@ -12,6 +12,7 @@ namespace Lind.DI.Console
         IFly flyObjChina;
         void print()
         {
+            System.Console.WriteLine("--------------------------------------");
             DIFactory.Init();//全局注册所有组件
             DIFactory.InjectFromObject(this);//拦截当前对象，并注入
             flyObj.step1();
