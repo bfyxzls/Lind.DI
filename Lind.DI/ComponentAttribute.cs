@@ -15,6 +15,8 @@ namespace Lind.DI
         public Type Intercepted { get; set; }
 
         public InterceptType InterceptType { get; set; } = InterceptType.Interface;
+
+        public bool IsInjectionClass { get; set; } = false;
     }
     public enum InterceptType
     {

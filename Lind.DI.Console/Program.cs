@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Threading;
 
 namespace Lind.DI.Console
 {
     class Program
     {
-        [Injection(Named="UsaPeople")]
+        [Injection(Named = "UsaPeople")]
         IFly flyObj;
 
         [Injection(Named = "ChinaPeople")]
         IFly flyObjChina;
-        void print(){
+        void print()
+        {
             DIFactory.Init();//全局注册所有组件
             DIFactory.InjectFromObject(this);//拦截当前对象，并注入
             flyObj.step1();
@@ -17,8 +19,12 @@ namespace Lind.DI.Console
         }
         static void Main(string[] args)
         {
-            System.Console.WriteLine("Hello World!");
-            new Program().print();
+            var program = new Program();
+            System.Console.WriteLine("ioc组件化和缓存拦截器");
+            program.print();
+            Thread.Sleep(1000);
+            program.print();
+
         }
     }
 }

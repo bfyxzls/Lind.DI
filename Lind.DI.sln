@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lind.DI.Console", "Lind.DI.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lind.DI", "Lind.DI\Lind.DI.csproj", "{5086E946-154E-489C-9C45-39792981A8E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lind.Caching", "Lind.Caching\Lind.Caching.csproj", "{1110D838-DEA9-410B-A3EF-57AD83D6F506}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5086E946-154E-489C-9C45-39792981A8E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5086E946-154E-489C-9C45-39792981A8E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5086E946-154E-489C-9C45-39792981A8E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1110D838-DEA9-410B-A3EF-57AD83D6F506}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1110D838-DEA9-410B-A3EF-57AD83D6F506}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1110D838-DEA9-410B-A3EF-57AD83D6F506}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1110D838-DEA9-410B-A3EF-57AD83D6F506}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

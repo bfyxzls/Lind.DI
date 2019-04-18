@@ -12,7 +12,7 @@ namespace Lind.DI.Console
         public void step1()
         {
             run.Do();
-            System.Console.WriteLine("飞机的元件也就这些了!");
+            System.Console.WriteLine("飞机的元件也就这些了!"+DateTime.Now);
         }
     }
 }

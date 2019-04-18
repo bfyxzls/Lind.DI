@@ -4,6 +4,8 @@ using System;
 using System.Linq;
 using System.Reflection;
 using Autofac.Extras.DynamicProxy;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Lind.DI
 {
@@ -78,8 +80,16 @@ namespace Lind.DI
         public static void Init()
         {
             var builder = new ContainerBuilder();
-            var arr = AppDomain.CurrentDomain.GetAssemblies()
-                 .SelectMany(x => x.DefinedTypes)
+            var all = AppDomain.CurrentDomain.GetAssemblies().Where(
+               x => !x.FullName.StartsWith("Dapper")
+               && !x.FullName.StartsWith("System")
+               && !x.FullName.StartsWith("AspNet")
+               && !x.FullName.StartsWith("netstandard")
+               && !x.FullName.StartsWith("Autofac")
+               && !x.FullName.StartsWith("Microsoft"))
+               .ToList();
+
+            var arr = all.SelectMany(x => x.DefinedTypes)
                  .Where(i => i.IsPublic && i.IsClass)
                  .ToList();
             foreach (var type in arr)
@@ -90,7 +100,9 @@ namespace Lind.DI
                     {
                         ComponentAttribute componentAttribute = (ComponentAttribute)type.GetCustomAttributes(false).FirstOrDefault(o => o.GetType() == typeof(ComponentAttribute));
 
-                        if (type.GetInterfaces() != null && type.GetInterfaces().Any())
+                        if (type.GetInterfaces() != null
+                         && type.GetInterfaces().Any()
+                         && !componentAttribute.IsInjectionClass)
                         {
                             type.GetInterfaces().ToList().ForEach(o =>
                             {
@@ -136,7 +148,9 @@ namespace Lind.DI
                         break;
                 }
             }
+            
             var builders = builder.RegisterType(typeImpl);
+            
             switch (componentAttribute.LifeCycle)
             {
                 case LifeCycle.Global:
