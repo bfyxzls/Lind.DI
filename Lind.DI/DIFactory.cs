@@ -3,6 +3,7 @@ using Autofac.Builder;
 using System;
 using System.Linq;
 using System.Reflection;
+using Autofac.Extras.DynamicProxy;
 
 namespace Lind.DI
 {
@@ -120,27 +121,142 @@ namespace Lind.DI
         /// <param name="componentAttribute">Component attribute.</param>
         static void registor(ContainerBuilder builder, Type typeImpl, Type type, ComponentAttribute componentAttribute)
         {
-
-            if (componentAttribute.LifeCycle == LifeCycle.Global)
+            if (componentAttribute.Intercepted != null)
             {
-                if (componentAttribute.Named != null)
-                    builder.RegisterType(typeImpl).Named(componentAttribute.Named, type).SingleInstance();
-                else
-                    builder.RegisterType(typeImpl).As(type).SingleInstance();
+                switch (componentAttribute.LifeCycle)
+                {
+                    case LifeCycle.Global:
+                        builder.RegisterType(componentAttribute.Intercepted).SingleInstance();
+                        break;
+                    case LifeCycle.CurrentRequest:
+                        builder.RegisterType(componentAttribute.Intercepted).InstancePerDependency();
+                        break;
+                    case LifeCycle.CurrentScope:
+                        builder.RegisterType(componentAttribute.Intercepted).InstancePerLifetimeScope();
+                        break;
+                }
             }
-            else if (componentAttribute.LifeCycle == LifeCycle.CurrentScope)
+            var builders = builder.RegisterType(typeImpl);
+            switch (componentAttribute.LifeCycle)
             {
-                if (componentAttribute.Named != null)
-                    builder.RegisterType(typeImpl).Named(componentAttribute.Named, type).InstancePerDependency();
-                else
-                    builder.RegisterType(typeImpl).As(type).InstancePerDependency();
-            }
-            else
-            {
-                if (componentAttribute.Named != null)
-                    builder.RegisterType(typeImpl).Named(componentAttribute.Named, type).InstancePerRequest();
-                else
-                    builder.RegisterType(typeImpl).As(type).InstancePerRequest();
+                case LifeCycle.Global:
+                    if (componentAttribute.Named != null)
+                    {
+                        if (componentAttribute.Intercepted != null)
+                        {
+                            if (componentAttribute.InterceptType == InterceptType.Interface)
+                            {
+                                builders.Named(componentAttribute.Named, type).SingleInstance()
+                                  .InterceptedBy(componentAttribute.Intercepted).EnableInterfaceInterceptors();
+                            }
+                            else
+                            {
+                                builders.Named(componentAttribute.Named, type).SingleInstance()
+                                  .InterceptedBy(componentAttribute.Intercepted).EnableClassInterceptors();
+                            }
+                        }
+                        else
+                        {
+                            builders.Named(componentAttribute.Named, type).SingleInstance();
+                        }
+                    }
+                    else
+                    {
+                        if (componentAttribute.Intercepted != null)
+                        {
+                            if (componentAttribute.InterceptType == InterceptType.Interface)
+                            {
+                                builders.As(type).SingleInstance()
+                                  .InterceptedBy(componentAttribute.Intercepted).EnableInterfaceInterceptors();
+                            }
+                            else
+                            {
+                                builders.As(type).SingleInstance()
+                                  .InterceptedBy(componentAttribute.Intercepted).EnableClassInterceptors();
+                            }
+                        }
+                        else
+                        {
+                            builders.As(type).SingleInstance();
+                        }
+                    }
+                    break;
+                case LifeCycle.CurrentScope:
+                    if (componentAttribute.Named != null)
+                    {
+                        if (componentAttribute.Intercepted != null)
+                        {
+                            if (componentAttribute.InterceptType == InterceptType.Interface)
+                            {
+                                builders.Named(componentAttribute.Named, type).InstancePerDependency()
+                                  .InterceptedBy(componentAttribute.Intercepted).EnableInterfaceInterceptors();
+                            }
+                            else
+                            {
+                                builders.Named(componentAttribute.Named, type).InstancePerDependency()
+                                  .InterceptedBy(componentAttribute.Intercepted).EnableClassInterceptors();
+                            }
+                        }
+                        else
+                            builders.Named(componentAttribute.Named, type).InstancePerDependency();
+                    }
+                    else
+                    {
+                        if (componentAttribute.Intercepted != null)
+                        {
+                            if (componentAttribute.InterceptType == InterceptType.Interface)
+                            {
+                                builders.As(type).InstancePerDependency()
+                                  .InterceptedBy(componentAttribute.Intercepted).EnableInterfaceInterceptors();
+                            }
+                            else
+                            {
+                                builders.As(type).InstancePerDependency()
+                                  .InterceptedBy(componentAttribute.Intercepted).EnableClassInterceptors();
+                            }
+                        }
+                        else
+                            builders.As(type).InstancePerDependency();
+                    }
+                    break;
+                case LifeCycle.CurrentRequest:
+                    if (componentAttribute.Named != null)
+                    {
+                        if (componentAttribute.Intercepted != null)
+                        {
+                            if (componentAttribute.InterceptType == InterceptType.Interface)
+                            {
+                                builders.Named(componentAttribute.Named, type).InstancePerLifetimeScope()
+                                  .InterceptedBy(componentAttribute.Intercepted).EnableInterfaceInterceptors();
+                            }
+                            else
+                            {
+                                builders.Named(componentAttribute.Named, type).InstancePerLifetimeScope()
+                                  .InterceptedBy(componentAttribute.Intercepted).EnableClassInterceptors();
+                            }
+                        }
+                        else
+                            builder.RegisterType(typeImpl).Named(componentAttribute.Named, type).InstancePerLifetimeScope();
+                    }
+                    else
+                    {
+                        if (componentAttribute.Intercepted != null)
+                        {
+                            if (componentAttribute.InterceptType == InterceptType.Interface)
+                            {
+                                builders.As(type).InstancePerLifetimeScope()
+                                  .InterceptedBy(componentAttribute.Intercepted).EnableInterfaceInterceptors();
+                            }
+                            else
+                            {
+                                builders.As(type).InstancePerLifetimeScope()
+                                  .InterceptedBy(componentAttribute.Intercepted).EnableClassInterceptors();
+                            }
+                        }
+                        else
+                            builder.RegisterType(typeImpl).As(type).InstancePerLifetimeScope();
+                    }
+                    break;
             }
         }
     }

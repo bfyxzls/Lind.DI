@@ -8,13 +8,23 @@ namespace Lind.DI
     [AttributeUsage(AttributeTargets.Class)]
     public class ComponentAttribute : Attribute
     {
-        public ComponentAttribute(string named=null)
-        {
-            this.Named = named;
-        }
-
         public LifeCycle LifeCycle { get; set; } = LifeCycle.CurrentScope;
 
         public String Named { get; set; }
+
+        public Type Intercepted { get; set; }
+
+        public InterceptType InterceptType { get; set; } = InterceptType.Interface;
+    }
+    public enum InterceptType
+    {
+        /// <summary>
+        /// 类拦截
+        /// </summary>
+        Class,
+        /// <summary>
+        /// 接口拦截
+        /// </summary>
+        Interface,
     }
 }
