@@ -79,8 +79,15 @@ namespace Lind.DI
         /// </summary>
         public static void Init()
         {
-
-            var all = AppDomain.CurrentDomain.GetAssemblies().Where(
+            var allDll = new List<Assembly>();
+            //添加项目目录下所有dll，避免因为主项目没有直接引用而无法加载dll的问题，AppDomain.CurrentDomain.getAssemblies()这个方法只加载主动依赖的程序集
+            Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory).Where(
+                           x => x.EndsWith(".dll")
+                           || x.EndsWith(".exe")).ToList().ForEach(i =>
+                           {
+                               allDll.Add(Assembly.LoadFrom(i));
+                           });
+            var all = allDll.Where(
                x => !x.FullName.StartsWith("Dapper")
                && !x.FullName.StartsWith("System")
                && !x.FullName.StartsWith("AspNet")

@@ -11,7 +11,7 @@ namespace Lind.Logger
     {
         protected override void InputLogger(Level level, string message)
         {
-            Console.WriteLine(DateTime.Now + level.ToString() + message);
+            System.Console.WriteLine( FormatStr(level.ToString(),message));
         }
     }
 }

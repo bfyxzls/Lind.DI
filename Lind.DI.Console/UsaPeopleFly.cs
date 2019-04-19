@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Lind.Caching;
+using Lind.Logger;
 
 namespace Lind.DI.Console
 {
@@ -11,12 +12,15 @@ namespace Lind.DI.Console
     [Component(Named="UsaPeople",Intercepted=typeof(CachingBehavior))]
     public class UsaPeopleFly : IFly
     {
+        [Injection]
+        ILogger logger;
+        
         [Injection(Named="RunUSA")]
         IRun run;
         public void step1()
         {
             run.Do();
-            System.Console.WriteLine("aircraft constituent part. "+DateTime.Now);
+            logger.Info("aircraft constituent part. "+DateTime.Now);
         }
     }
 }

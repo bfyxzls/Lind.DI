@@ -20,18 +20,14 @@ namespace Lind.Logger
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
-        protected string FormatStr(string level, string message, Exception ex)
+        protected string FormatStr(string level, string message)
         {
-            var json = JsonConvert.SerializeObject(new
-            {
-                target_index = this.GetType().Name,
-                timestamp = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fff+0800"),
-                Level = level.ToString(),
-                Message = message,
-                StackTrace = ex?.StackTrace
-            });
-            json = json.Replace("target_index", "@target_index").Replace("timestamp", "@timestamp");
-            return json;
+            string id = "[" + Thread.CurrentThread.ManagedThreadId + "]";
+            return string.Format("{0} {1} {2} {3}"
+            , DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fff+0800")
+            , level.PadLeft(5, ' ')
+            , id.PadLeft(2, ' ')
+            , message);
         }
 
         /// <summary>
@@ -47,31 +43,26 @@ namespace Lind.Logger
         public virtual void Debug(string message)
         {
             InputLogger(Level.DEBUG, message);
-            Trace.WriteLine(message);
         }
 
         public virtual void Error(string message, Exception ex)
         {
             InputLogger(Level.ERROR, message + ex.ToString());
-            Trace.WriteLine(message + ex.ToString());
         }
 
         public virtual void Fatal(string message)
         {
             InputLogger(Level.FATAL, message);
-            Trace.WriteLine(message);
         }
 
         public virtual void Info(string message)
         {
             InputLogger(Level.INFO, message);
-            Trace.WriteLine(message);
         }
 
         public virtual void Warn(string message)
         {
             InputLogger(Level.FATAL, message);
-            Trace.WriteLine(message);
         }
 
         #endregion ILogger 成员
