@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lind.DI", "Lind.DI\Lind.DI.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lind.Caching", "Lind.Caching\Lind.Caching.csproj", "{1110D838-DEA9-410B-A3EF-57AD83D6F506}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lind.Logger", "Lind.Logger\Lind.Logger.csproj", "{6C59E910-A433-4888-ADAE-0DCF921100EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lind.Logger", "Lind.Logger\Lind.Logger.csproj", "{6C59E910-A433-4888-ADAE-0DCF921100EC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frameworks", "Frameworks", "{11B46AA4-2B69-4DD9-B871-24378BC8AD14}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +38,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5086E946-154E-489C-9C45-39792981A8E9} = {11B46AA4-2B69-4DD9-B871-24378BC8AD14}
+		{1110D838-DEA9-410B-A3EF-57AD83D6F506} = {11B46AA4-2B69-4DD9-B871-24378BC8AD14}
+		{6C59E910-A433-4888-ADAE-0DCF921100EC} = {11B46AA4-2B69-4DD9-B871-24378BC8AD14}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {89CA5638-9E06-4381-8B18-471CE6C478A4}
