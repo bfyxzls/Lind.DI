@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+    <Folder Include="Filters\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Lind.DI\Lind.DI.csproj" />
+    <ProjectReference Include="..\Lind.Caching\Lind.Caching.csproj" />
+    <ProjectReference Include="..\Lind.Logger\Lind.Logger.csproj" />
+  </ItemGroup>
+</Project>

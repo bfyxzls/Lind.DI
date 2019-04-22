@@ -11,5 +11,16 @@
             ],
             "problemMatcher": "$msCompile"
         }
+        ,
+        {
+            "label": "build2",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Lind.DI.Api/Lind.DI.Api.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        }
     ]
 }
